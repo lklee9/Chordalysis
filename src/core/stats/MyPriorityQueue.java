@@ -18,6 +18,7 @@
 package core.stats;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import core.model.Couple;
@@ -121,6 +122,18 @@ public class MyPriorityQueue extends PriorityQueue<ScoredGraphAction> {
       this.offer(action);
     }
     return res;
+  }
+
+  public List<Couple<Integer>> getActionEdges() {
+    List<Couple<Integer>> actionEdges = new ArrayList<>();
+    for (int i = 0; i < this.actionsByEdge.length - 1; i++) {
+      for (int j = i + 1; j < this.actionsByEdge.length; j++) {
+        if (this.actionsByEdge[i][j] != null) {
+          actionEdges.add(new Couple<>(i, j));
+        }
+      }
+    }
+    return actionEdges;
   }
 
 }
