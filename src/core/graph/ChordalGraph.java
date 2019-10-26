@@ -571,6 +571,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 		if (containsAll(Cab, Cb)) {
 			updateEligibilityForNonConectedComponentsSmart(Cb, pq, verbose);
 		}
+		computeCliquesAndSeparatorsBFS();
 
 		if (verbose)
 			printAvailableEdges();
