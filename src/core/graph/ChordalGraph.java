@@ -429,6 +429,13 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 	public Object clone() {
 		ChordalGraph copy = (ChordalGraph) super.clone();
 		copy.cg = (SimpleGraph<BitSet, CliqueGraphEdge>) this.cg.clone();
+		int nbVertices = vertexSet().size();
+		copy.eligibleEdges = new CliqueGraphEdge[nbVertices][nbVertices];
+		for (int i = 0; i < nbVertices; i++) {
+			for (int j = 0; j < nbVertices; j++) {
+				copy.eligibleEdges[i][j] = this.eligibleEdges[i][j];
+			}
+		}
 		return copy;
 	}
 
