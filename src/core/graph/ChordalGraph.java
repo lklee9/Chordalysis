@@ -444,6 +444,10 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 		return (SimpleGraph<BitSet, UniqueTreeSet<Integer>>) cg.clone();
 	}
 
+	public CliqueGraphEdge getEligibleEdge(Integer a, Integer b) {
+		return eligibleEdges[a][b];
+	}
+
 	/**
 	 * This function add the given edge without checking if this edge will
 	 * maintain the graph chordal. The user has to be sure it will, or the
