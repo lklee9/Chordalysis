@@ -17,6 +17,7 @@
  ******************************************************************************/
 package core.tools;
 
+import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.special.Gamma;
 
 public class ChiSquared {
@@ -24,7 +25,9 @@ public class ChiSquared {
     if (chiSquared <= 0.0) {
       return 1.0;
     } else {
-      return 1.0 - Gamma.regularizedGammaP(nbDegreesOfFreedom / 2.0, chiSquared / 2.0, epsilon, Integer.MAX_VALUE);
+      ChiSquaredDistribution dist = new ChiSquaredDistribution(nbDegreesOfFreedom);
+      return 1.0 - dist.cumulativeProbability(chiSquared);
+      //return 1.0 - Gamma.regularizedGammaP(nbDegreesOfFreedom / 2.0, chiSquared / 2.0, epsilon, Integer.MAX_VALUE);
     }
   }
 
