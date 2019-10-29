@@ -85,7 +85,7 @@ public class JunctionForestComputer {
 
 	public SimpleFactor getBeliefContainingVars(BitSet vars) {
 		for (BitSet clique : this.forestIdxCliqueIsIn.keySet()) {
-			if (oracle.containsAll(clique, vars)) {
+			if (EdgeAddingOracle.containsAll(clique, vars)) {
 				JunctionTreeComputer tree = this.getTreeCliqueIsIn(clique);
 				return tree.cliqueBelief.get(clique);
 			}

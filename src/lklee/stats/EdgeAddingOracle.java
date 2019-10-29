@@ -147,7 +147,7 @@ public class EdgeAddingOracle {
     return peo;
   }
 
-  public boolean containsAll(BitSet s1, BitSet s2) {
+  public static boolean containsAll(BitSet s1, BitSet s2) {
     BitSet intersection = (BitSet) s1.clone();
     intersection.and(s2);
     return intersection.equals(s2);
