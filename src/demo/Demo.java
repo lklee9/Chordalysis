@@ -55,7 +55,7 @@ public class Demo {
 
     CSVLoader loader = new CSVLoader();
     System.out.println("Downloading dataset...");
-    URL oracle = new URL("http://repository.seasr.org/Datasets/UCI/csv/mushroom.csv");
+		URL oracle = new URL("https://www.dropbox.com/s/ulny2gir336asxd/mush-demo.csv?dl=1");
     File csvFile = File.createTempFile("data-", ".csv");
     BufferedReader in = new BufferedReader(new InputStreamReader(oracle.openStream()));
     PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(csvFile))); 
