@@ -252,8 +252,8 @@ public class PrintableModel {
         double y = cells.get(varIndex).getGeometry().getY();
         double w = cells.get(varIndex).getGeometry().getWidth();
         double h = cells.get(varIndex).getGeometry().getHeight();
-        out.println("\twindowpos = ("+w+","+h+","+x+","+y+")");
-        out.println(");");
+        out.println("\twindowpos = ("+w+","+h+","+x+","+y+");");
+        out.println("};");
 
 
       }
