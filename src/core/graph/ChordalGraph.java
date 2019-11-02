@@ -178,7 +178,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 		if (eligibleEdges[a][b] == null) {
 			return null;
 		}
-		return (BitSet) eligibleEdges[a][b].separator.clone();
+		return (BitSet) eligibleEdges[a][b].getSeparator().clone();
 	}
 
 	public DefaultEdge removeSecuredEdge(Integer v1, Integer v2) {
@@ -369,7 +369,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 			BitSet target = cg.getEdgeTarget(edge);
 			DefaultWeightedEdge newEdge = wcg.addEdge(source, target);
 			// negate for finding maximum spanning tree
-			wcg.setEdgeWeight(newEdge, -edge.separator.size());
+			wcg.setEdgeWeight(newEdge, -edge.getSeparator().size());
 		}
 
 		KruskalMinimumSpanningTree<BitSet, DefaultWeightedEdge> spanTree = new KruskalMinimumSpanningTree<BitSet, DefaultWeightedEdge>(wcg);
@@ -396,7 +396,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 				if (eligibleEdges[i][j] == null) {
 					System.out.print("\t");
 				} else {
-					System.out.print(eligibleEdges[i][j].separator.toString() + "\t");
+					System.out.print(eligibleEdges[i][j].getSeparator().toString() + "\t");
 				}
 			}
 			System.out.println();
@@ -461,8 +461,8 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 	public DefaultEdge addSecuredEdge(Integer a, Integer b, MyPriorityQueue pq, boolean verbose) {
 		int nbVertices = vertexSet().size();
 		// get Ca and Cb
-		BitSet Ca = eligibleEdges[a][b].c1;
-		BitSet Cb = eligibleEdges[a][b].c2;
+		BitSet Ca = eligibleEdges[a][b].getClique1();
+		BitSet Cb = eligibleEdges[a][b].getClique2();
 		if (!Ca.get(a)) {
 			BitSet tmp = Ca;
 			Ca = Cb;
@@ -472,7 +472,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 			System.out.println(a + "--" + Ca);
 		if (verbose)
 			System.out.println(b + "--" + Cb);
-		BitSet Sab = eligibleEdges[a][b].separator;
+		BitSet Sab = eligibleEdges[a][b].getSeparator();
 		TreeSet<Integer> SabSet = new TreeSet<Integer>();
 		for (int i = Sab.nextSetBit(0); i >= 0; i = Sab.nextSetBit(i + 1)) {
 			SabSet.add(i);
@@ -616,10 +616,10 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 		if (verbose)
 			System.out.println("\tnew edges around Cab");
 		for (CliqueGraphEdge edgeAroundCab : edgesAroundCab) {
-			BitSet Sp = edgeAroundCab.separator;
-			BitSet Cp = edgeAroundCab.c1;
+			BitSet Sp = edgeAroundCab.getSeparator();
+			BitSet Cp = edgeAroundCab.getClique1();
 			if (Cp.equals(Cab)) {
-				Cp = edgeAroundCab.c2;
+				Cp = edgeAroundCab.getClique2();
 			}
 			BitSet CpMinusSp = (BitSet) Cp.clone();
 			CpMinusSp.andNot(Sp);
@@ -671,7 +671,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 							System.out.println("\tadd edge (Cab,C') = (" + Cab + "," + Cp + ")");
 						CliqueGraphEdge addedEdge = cg.addEdge(Cp, Cab);
 
-						if (addedEdge.separator.isEmpty()) {
+						if (addedEdge.getSeparator().isEmpty()) {
 							System.err.println("shouldn't have added this edge");
 							System.exit(0);
 						}
@@ -686,16 +686,16 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 		// Neighbours of Ca
 
 		for (CliqueGraphEdge CpCa : cg.edgesOf(Ca)) {
-			BitSet Cp = CpCa.c1;
+			BitSet Cp = CpCa.getClique1();
 			if (Cp.equals(Ca)) {
-				Cp = CpCa.c2;
+				Cp = CpCa.getClique2();
 			}
 			if (Cp.equals(Cab)) {
 				continue;
 			}
 			if (verbose)
 				System.out.println("\tCp=" + Cp + " is a neighbour of Ca=" + Ca);
-			BitSet Sp = CpCa.separator;
+			BitSet Sp = CpCa.getSeparator();
 			if (verbose)
 				System.out.println("\tS' = Cp inter Ca=" + Sp);
 			if (Sp.isEmpty()) {
@@ -708,7 +708,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 						System.out.println("\tadd edge (C',Cab)a=(" + Cp + "," + Cab + ")");
 					CliqueGraphEdge addedEdge = cg.addEdge(Cp, Cab);
 
-					if (addedEdge.separator.isEmpty()) {
+					if (addedEdge.getSeparator().isEmpty()) {
 						System.err.println("shouldn't have added this edge");
 						System.exit(0);
 					}
@@ -722,9 +722,9 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 					ConnectivityInspector<Integer, DefaultEdge> inspectorGpp, MyPriorityQueue pq, boolean verbose) {
 		ArrayList<CliqueGraphEdge> toRemove = new ArrayList<CliqueGraphEdge>();
 		for (CliqueGraphEdge cEdge : cgEdgesBeforeNewNode) {
-			BitSet c1 = cEdge.c1;
-			BitSet c2 = cEdge.c2;
-			BitSet S12 = cEdge.separator;
+			BitSet c1 = cEdge.getClique1();
+			BitSet c2 = cEdge.getClique2();
+			BitSet S12 = cEdge.getSeparator();
 
 			// if S12 != Sab, the edge is kept
 			if (S12.equals(Sab)) {
@@ -783,7 +783,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 			if (!eligibleEdges[a][b].equals(edge)) {
 				eligibleEdges[a][b] = edge;
 				eligibleEdges[b][a] = edge;
-				if (!eligibleEdges[a][b].separator.equals(edge.separator)) {
+				if (!eligibleEdges[a][b].getSeparator().equals(edge.getSeparator())) {
 					if (pq != null)
 						pq.updateEdge(a, b);
 				}

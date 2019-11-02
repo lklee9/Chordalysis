@@ -20,7 +20,7 @@ package core.graph;
 import java.util.BitSet;
 
 public class CliqueGraphEdge {
-  BitSet c1,c2,separator;
+  private BitSet c1,c2,separator;
   public CliqueGraphEdge(BitSet c1,BitSet c2){
     this.c1 = c1;
     this.c2 = c2;
