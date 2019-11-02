@@ -13,8 +13,7 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import com.mxgraph.layout.mxOrganicLayout;
@@ -263,8 +262,6 @@ public class PrintableModel {
       out.close();
     } catch (FileNotFoundException e1) {
       e1.printStackTrace();
-    } catch (CycleFoundException e) {
-      e.printStackTrace();
     }
 
   }

@@ -35,8 +35,7 @@ import org.eclipse.recommenders.jayes.BayesNet;
 import org.eclipse.recommenders.jayes.BayesNode;
 import org.eclipse.recommenders.jayes.inference.IBayesInferer;
 import org.eclipse.recommenders.jayes.inference.jtree.JunctionTreeAlgorithm;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 @SuppressWarnings("deprecation")
@@ -53,11 +52,7 @@ public class Inference {
 
     public Inference(DecomposableModel model, String[] variableNames, String[][] outcomes) {
 
-	try {
 	    this.bn = model.getBayesianNetwork();
-	} catch (CycleFoundException e) {
-	    e.printStackTrace();
-	}
 
 	this.jnodes = new HashMap<Integer, BayesNode>();
 	this.nodesNumber = new HashMap<BayesNode, Integer>();

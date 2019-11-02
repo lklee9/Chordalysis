@@ -29,21 +29,16 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.alg.ConnectivityInspector;
-import org.jgrapht.alg.KruskalMinimumSpanningTree;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.spanning.KruskalMinimumSpanningTree;
+import org.jgrapht.graph.*;
 
 import core.stats.MyPriorityQueue;
 
 /**
  * This class represents a chordal graph, i.e., a triangulated graph
  */
-public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements UndirectedGraph<Integer, DefaultEdge> {
+public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> {
 
 	public SimpleGraph<BitSet, CliqueGraphEdge> cg;
 	CliqueGraphEdge[][] eligibleEdges = null;
@@ -61,7 +56,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 
 	public ChordalGraph() {
 		super(DefaultEdge.class);
-		cg = new SimpleGraph<BitSet, CliqueGraphEdge>(CliqueGraphEdgeFactory.getInstance());
+		cg = new SimpleGraph<BitSet, CliqueGraphEdge>(CliqueGraphEdge.class);
 	}
 
 	public boolean isEdgeRemovable(Integer vertex1, Integer vertex2) {
@@ -356,8 +351,8 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 	 */
 	@Deprecated
 	public SimpleGraph<BitSet, CliqueGraphEdge> getJunctionTree() {
-		SimpleGraph<BitSet, DefaultWeightedEdge> wcg = new SimpleGraph<BitSet, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-		SimpleGraph<BitSet, CliqueGraphEdge> JT = new SimpleGraph<BitSet, CliqueGraphEdge>(CliqueGraphEdgeFactory.getInstance());
+		SimpleWeightedGraph<BitSet, DefaultWeightedEdge> wcg = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+		SimpleGraph<BitSet, CliqueGraphEdge> JT = new SimpleGraph<BitSet, CliqueGraphEdge>(CliqueGraphEdge.class);
 
 		// construct clique graph
 		for (BitSet clique : cg.vertexSet()) {
@@ -374,7 +369,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 
 		KruskalMinimumSpanningTree<BitSet, DefaultWeightedEdge> spanTree = new KruskalMinimumSpanningTree<BitSet, DefaultWeightedEdge>(wcg);
 
-		for (DefaultWeightedEdge e : spanTree.getEdgeSet()) {
+		for (DefaultWeightedEdge e : spanTree.getSpanningTree().getEdges()) {
 			BitSet v1 = wcg.getEdgeSource(e);
 			BitSet v2 = wcg.getEdgeTarget(e);
 			JT.addEdge(v1, v2);
@@ -587,7 +582,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 
 	private void updateEligibilityForNonConectedComponentsSmart(BitSet Cab, MyPriorityQueue pq, boolean verbose) {
 		ConnectivityInspector<Integer, DefaultEdge> insp = new ConnectivityInspector<Integer, DefaultEdge>(this);
-		if (!insp.isGraphConnected()) {
+		if (!insp.isConnected()) {
 			if (verbose)
 				System.out.println("\tnon-connected components");
 			for (int v = Cab.nextSetBit(0); v >= 0; v = Cab.nextSetBit(v + 1)) {
@@ -803,9 +798,8 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 	/**
 	 * @return one a Bayesian Network for this model (representing the same
 	 *         joint distribution)
-	 * @throws CycleFoundException
 	 */
-	public DirectedAcyclicGraph<Integer, DefaultEdge> getBayesianNetwork() throws CycleFoundException {
+	public DirectedAcyclicGraph<Integer, DefaultEdge> getBayesianNetwork() {
 
 		List<Integer> peo = getEliminationOrdering();
 		DirectedAcyclicGraph<Integer, DefaultEdge> bn = new DirectedAcyclicGraph<Integer, DefaultEdge>(DefaultEdge.class);
@@ -815,7 +809,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> implements U
 			for (int j = 0; j < i; j++) {
 				Integer nodeJ = peo.get(j);
 				if (this.containsEdge(nodeJ, nodeI) || this.containsEdge(nodeI, nodeJ)) {
-					bn.addDagEdge(nodeI, nodeJ);
+					bn.addEdge(nodeI, nodeJ);
 				}
 			}
 		}
