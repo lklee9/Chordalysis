@@ -30,8 +30,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.commons.math3.util.FastMath;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph.CycleFoundException;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import core.graph.ChordalGraph;
@@ -866,9 +865,8 @@ public class DecomposableModel {
   /**
    * @return a Bayesian Network that can represent the same joint (links only,
    *         no CPTs)
-   * @throws CycleFoundException
    */
-  public DirectedAcyclicGraph<Integer, DefaultEdge> getBayesianNetwork() throws CycleFoundException {
+  public DirectedAcyclicGraph<Integer, DefaultEdge> getBayesianNetwork() {
     return graph.getBayesianNetwork();
   }
 

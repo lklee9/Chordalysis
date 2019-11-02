@@ -14,7 +14,7 @@ You can find out more about Commons Math and/or download the latest version from
 http://commons.apache.org/proper/commons-math/
 
 ------------------------------
-jgrapht-jdk1.6 (version 0.8.3)
+jgrapht-core (version 1.3.0)
 ------------------------------
 
 Used to store graphs and compute shortest paths. 

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Chordalysis.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+/*
 package core.graph;
 
 import java.util.BitSet;
@@ -33,3 +34,4 @@ public class CliqueGraphEdgeFactory implements EdgeFactory<BitSet, CliqueGraphEd
   }
 
 }
+*/

@@ -17,19 +17,33 @@
  ******************************************************************************/
 package core.graph;
 
+import org.jgrapht.graph.DefaultEdge;
+
 import java.util.BitSet;
 
-public class CliqueGraphEdge {
+public class CliqueGraphEdge extends DefaultEdge {
   private BitSet c1,c2,separator;
-  public CliqueGraphEdge(BitSet c1,BitSet c2){
+  public CliqueGraphEdge(){
+  }
+
+  public CliqueGraphEdge(BitSet c1, BitSet c2){
     this.c1 = c1;
     this.c2 = c2;
-    this.separator = (BitSet) c1.clone();
-    this.separator.and(c2);
+    this.store();
+  }
+
+  private void store() {
+    if (this.c1 == null) this.c1 = (BitSet) this.getSource();
+    if (this.c2 == null) this.c2 = (BitSet) this.getTarget();
+    if (this.separator == null) {
+      this.separator = (BitSet) c1.clone();
+      this.separator.and(c2);
+    }
   }
 
   @Override
   public boolean equals(Object o) {
+  	this.store();
     if (o == this)
       return true;
     if(o instanceof CliqueGraphEdge){
@@ -43,18 +57,22 @@ public class CliqueGraphEdge {
   }
 
   public String toString(){
+    this.store();
     return c1.toString()+" inter "+c2.toString()+" = "+separator.toString();
   }
 
   public BitSet getClique1(){
+    this.store();
     return (BitSet) c1.clone();
   }
 
   public BitSet getClique2(){
+    this.store();
     return (BitSet) c2.clone();
   }
 
   public BitSet getSeparator(){
+    this.store();
     return (BitSet) separator.clone();
   }
 
