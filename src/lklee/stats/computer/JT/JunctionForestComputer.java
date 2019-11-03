@@ -6,10 +6,11 @@ import core.model.DecomposableModel;
 import lklee.stats.computer.JT.type.SimpleFactor;
 import lklee.stats.computer.JT.factor.FactorComputer;
 import lklee.stats.EdgeAddingOracle;
-import org.jgrapht.alg.ConnectivityInspector;
-import org.jgrapht.alg.KruskalMinimumSpanningTree;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.spanning.KruskalMinimumSpanningTree;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 import java.util.*;
 
@@ -107,8 +108,8 @@ public class JunctionForestComputer {
 	}
 
 	private JunctionTreeComputer createTree(Set<BitSet> verticesInTree) {
-		SimpleGraph<BitSet, DefaultWeightedEdge> wcg = new SimpleGraph<>(DefaultWeightedEdge.class);
-		SimpleGraph<BitSet, CliqueGraphEdge> JT = new SimpleGraph<>(CliqueGraphEdge::new);
+		SimpleWeightedGraph<BitSet, DefaultWeightedEdge> wcg = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+		SimpleGraph<BitSet, CliqueGraphEdge> JT = new SimpleGraph<>(CliqueGraphEdge.class);
 		List<BitSet> cliques = new ArrayList<>(verticesInTree);
 		for (BitSet clique : cliques) {
 			wcg.addVertex(clique);
@@ -127,7 +128,7 @@ public class JunctionForestComputer {
 		}
 		KruskalMinimumSpanningTree<BitSet, DefaultWeightedEdge> span =
 				new KruskalMinimumSpanningTree<>(wcg);
-		for (DefaultWeightedEdge e : span.getEdgeSet()) {
+		for (DefaultWeightedEdge e : span.getSpanningTree().getEdges()) {
 			BitSet v1 = wcg.getEdgeSource(e);
 			BitSet v2 = wcg.getEdgeTarget(e);
 			JT.addEdge(v1, v2);
