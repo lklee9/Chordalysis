@@ -48,6 +48,7 @@ public class CliqueGraphEdge extends DefaultEdge {
       return true;
     if(o instanceof CliqueGraphEdge){
       CliqueGraphEdge e = (CliqueGraphEdge) o;
+      e.store();
 
       return (c1.size()==e.c1.size() && c2.size()==e.c2.size() && e.c1.equals(c1) && e.c2.equals(c2))||
         (c1.size()==e.c2.size() && c2.size()==e.c1.size() && e.c1.equals(c2) && e.c2.equals(c1));
