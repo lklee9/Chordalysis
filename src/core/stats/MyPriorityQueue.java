@@ -31,14 +31,14 @@ import core.stats.scorer.GraphActionScorer;
 public class MyPriorityQueue extends PriorityQueue<ScoredGraphAction> {
 
   private static final long serialVersionUID = 6863099646496386231L;
-  DecomposableModel model;
-  GraphActionScorer scorer;
+  protected DecomposableModel model;
+  protected GraphActionScorer scorer;
 
-  ScoredGraphAction[][] actionsByEdge;
+  protected ScoredGraphAction[][] actionsByEdge;
 
-  ArrayList<Couple<Integer>> toDelete;
-  ArrayList<Couple<Integer>> toAdd;
-  ArrayList<Couple<Integer>> toUpdate;
+  protected ArrayList<Couple<Integer>> toDelete;
+  protected ArrayList<Couple<Integer>> toAdd;
+  protected ArrayList<Couple<Integer>> toUpdate;
 
   public ArrayList<Integer> nbScoredEdgesPerStep = new ArrayList<Integer>();
   public ArrayList<Integer> nbEdgesAvailablePerStep = new ArrayList<Integer>();
