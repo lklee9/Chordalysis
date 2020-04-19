@@ -133,6 +133,14 @@ public abstract class ChordalysisModeller{
       this.bestModel  = bm;
       this.lattice    = l;
     }
+
+    public DecomposableModel getBestModel() {
+      return bestModel;
+    }
+
+    public Lattice getLattice() {
+      return lattice;
+    }
   }
 
 
