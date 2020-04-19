@@ -364,7 +364,7 @@ public class ChordalGraph extends SimpleGraph<Integer, DefaultEdge> {
 			BitSet target = cg.getEdgeTarget(edge);
 			DefaultWeightedEdge newEdge = wcg.addEdge(source, target);
 			// negate for finding maximum spanning tree
-			wcg.setEdgeWeight(newEdge, -edge.getSeparator().size());
+			wcg.setEdgeWeight(newEdge, -edge.getSeparator().cardinality());
 		}
 
 		KruskalMinimumSpanningTree<BitSet, DefaultWeightedEdge> spanTree = new KruskalMinimumSpanningTree<BitSet, DefaultWeightedEdge>(wcg);
